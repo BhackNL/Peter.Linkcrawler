@@ -2,7 +2,7 @@
 header("Content-Type: text/plain");
 
 // Please change the url below to the url of your main page.
-$rootPage = "http://www.vu.nl";
+$rootPage = "http://www.bekijkhetnu.nl";
 
 // Please specify a path to save a text file containing the broken links.
 $file = fopen("../../Desktop/Brokenlinks.txt", "x");
@@ -76,6 +76,8 @@ class Page {
                 foreach ($this->linksOnPage as $link) {
                     if ($link[0] == "/") {
                         $this->completeLinks[] = $rootPage . $link;
+                    } else if (strpos($link, "http") === false) {
+                        $this->completeLinks[] = $rootPage . "/" . $link;
                     } else {
                         $this->completeLinks[] = $link;
                     }
