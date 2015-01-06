@@ -112,7 +112,7 @@ function KeyFilter($link) {
 
     return($i == 0 ? true : false);
 }
-
+//Test
 function LinkFilter($link) {
     if ($link == "" || $link[0] == "#"){
         return false;
