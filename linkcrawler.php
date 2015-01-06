@@ -2,10 +2,13 @@
 header("Content-Type: text/plain");
 
 // Please change the url below to the url of your main page.
-$rootPage = "http://www.bekijkhetnu.nl";
+$rootPage = "http://www.rug.nl";
 
 // Please specify a path to save a text file containing the broken links.
 $file = fopen("../../Desktop/Brokenlinks.txt", "x");
+
+// Please indicate whether you wanna see the output of the running program
+$seeOutput = true;
 
 // We want to filter some links out based on specific keywords (e.g. "login?" or "?lang")
 // You can write every keyword you want to use for the filter into this array.
@@ -35,6 +38,7 @@ class Page {
         global $history;
         global $rootPage;
         global $file;
+        global $seeOutput;
 
         $this->parentUrl = $parent;
         $this->ownUrl = $url;
@@ -56,7 +60,9 @@ class Page {
         $request->setOptions(array('redirect' => 8));
         $request->send();
         $this->ownStatus = $request->getResponseCode();*/
-        if (KeyFilter($this->ownUrl)) {
+
+        // If you don't want to see the output simply put the next
+        if ($seeOutput == true && KeyFilter($this->ownUrl)) {
             echo ($this->parentUrl." ");
             echo ($this->ownUrl." ");
             echo ($this->ownStatus."\n");
