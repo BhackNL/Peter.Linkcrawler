@@ -2,7 +2,7 @@
 header("Content-Type: text/plain");
 
 // Please change the url below to the url of your main page.
-$rootPage = "http://www.rug.nl";
+$rootPage = "http://www.vu.nl";
 
 // Please specify a path to save a text file containing the broken links.
 $file = fopen("../../Desktop/Brokenlinks.txt", "x");
@@ -16,7 +16,8 @@ $filterKeys = array(
     "javascript:",
     "!rss",
     "?print",
-    ".pdf"
+    ".pdf",
+    "mailto:"
 );
 
 // Here we implement a history, so that checked links are not checked again.
@@ -55,10 +56,12 @@ class Page {
         $request->setOptions(array('redirect' => 8));
         $request->send();
         $this->ownStatus = $request->getResponseCode();*/
+        if (KeyFilter($this->ownUrl)) {
+            echo ($this->parentUrl." ");
+            echo ($this->ownUrl." ");
+            echo ($this->ownStatus."\n");
+        }
 
-        echo ($this->parentUrl." ");
-        echo ($this->ownUrl." ");
-        echo ($this->ownStatus."\n");
         if ($this->ownStatus == 200 && $goFurther == true && KeyFilter($this->ownUrl)) {
             $matches = array();
             preg_match_all('/<a.+href="(.+)"/iU', $output, $matches);   // Reads out all links on the page
@@ -89,7 +92,7 @@ class Page {
                     }
                 }
             }
-        } else if ($this->ownStatus != 200) {
+        } else if ($this->ownStatus != 200 && KeyFilter($this->ownUrl)) {
             fwrite($file, $this->parentUrl . " " . $this->ownUrl . " " . $this->ownStatus . "\n");
         }
     }
@@ -112,7 +115,7 @@ function KeyFilter($link) {
 
     return($i == 0 ? true : false);
 }
-//Test
+
 function LinkFilter($link) {
     if ($link == "" || $link[0] == "#"){
         return false;
