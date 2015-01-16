@@ -27,7 +27,7 @@ $filterKeys = array(
 $history = array();
 $history[] = $rootPage;
 
-$runNr = 1;
+$runNr = 1; // Running number to create unique object names.
 
 
 class Page {
