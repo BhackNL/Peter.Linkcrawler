@@ -27,6 +27,8 @@ $filterKeys = array(
 $history = array();
 $history[] = $rootPage;
 
+$runNr = 1;
+
 
 class Page {
     var $ownUrl;
@@ -41,6 +43,7 @@ class Page {
         global $rootPage;
         global $file;
         global $seeOutput;
+        global $runNr;
 
         // Set the object-specific info.
         $this->parentUrl = $parent;
@@ -102,11 +105,13 @@ class Page {
                     if (!in_array($link, $history)) {
                         $history[] = $link;
                         if (strpos($link, $rootPage) !== false) {
-                            $page = new Page($this->ownUrl, $link, true);
+                            ${'page' . $runNr} = new Page($this->ownUrl, $link, true);
+                            $runNr++;
                         } else {
                             // If a link directs to a page not hosted by the root page (e.g. www.youtube.com),
                             // then only the availability of the page is checked, but the script stops there.
-                            $page = new Page($this->ownUrl, $link, false);
+                            ${'page' . $runNr} = new Page($this->ownUrl, $link, false);
+                            $runNr++;
                         }
                     }
                 }
